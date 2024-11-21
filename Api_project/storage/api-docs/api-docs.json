@@ -1,0 +1,1905 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "WeMinder API's",
+        "version": "Laravel 11.x"
+    },
+    "paths": {
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "1-Register User"
+                ],
+                "summary": "",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "description": "User name",
+                                        "example": ""
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User's email",
+                                        "example": ""
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "User's password (The password must be at least 8 characters long, contain at least one uppercase letter, and one special character.)",
+                                        "example": ""
+                                    }
+                                },
+                                "required": [
+                                    "email"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "2-Login User"
+                ],
+                "summary": "User login with email and password",
+                "description": "Authenticate a user with email and password.",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User's email",
+                                        "example": ""
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "User's password (The password must be at least 8 characters long, contain at least one uppercase letter, and one special character.)",
+                                        "example": ""
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "password"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful login"
+                    },
+                    "401": {
+                        "description": "Unauthorized - Invalid credentials"
+                    },
+                    "400": {
+                        "description": "Bad request - Invalid input data"
+                    }
+                }
+            }
+        },
+"/api/products": {
+    "get": {
+        "tags": ["3-Get All products"],
+        "summary": "Get All products",
+        "responses": {
+            "200": {
+                "description": "OK"
+            },
+            "404": {
+                "description": "Not Found"
+            }
+        },
+        "security": [
+            {
+                "bearerAuth": []
+            }
+        ]
+    },
+        "post": {
+          "tags": ["4-Create a Product with image"],
+          "summary": "Upload product details including an image",
+          "consumes": ["multipart/form-data"],
+          "requestBody": {
+            "required": true,
+            "content": {
+              "multipart/form-data": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "name": {
+                      "type": "string",
+                      "description": "The name of the product"
+                    },
+                    "description": {
+                      "type": "string",
+                      "description": "Description of the product"
+                    },
+                    "price": {
+                      "type": "number",
+                      "description": "Price of the product"
+                    },
+                    "image": {
+                      "type": "string",
+                      "format": "binary",
+                      "description": "Image file to upload"
+                    }
+                  },
+                  "required": ["name", "description", "price", "image"]
+                }
+              }
+            }
+          },
+          "responses": {
+            "200": {
+              "description": "Image and product details uploaded successfully"
+            },
+            "400": {
+              "description": "Bad Request"
+            }
+          },
+          "security": [
+            {
+              "bearerAuth": []
+            }
+          ]
+        }
+      }
+    },
+      
+    "/api/forgot-password": {
+            "post": {
+                "tags": [
+                    "4-Send OTP To Email (Forgot Password)"
+                ],
+                "summary": "",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User's email",
+                                        "example": ""
+                                    }
+                                },
+                                "required": [
+                                    "email"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/reset-otp": {
+            "post": {
+                "tags": [
+                    "5-OTP Confirmation"
+                ],
+                "summary": "",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User's email",
+                                        "example": ""
+                                    },
+                                    "otp_code": {
+                                        "type": "number",
+                                        "description": "OTP",
+                                        "example": ""
+                                    }
+                                },
+                                "required": [
+                                    "email",
+                                    "otp_code"
+                                ]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            },
+        "/api/reset-password": {
+            "post": {
+                "tags": [
+                    "6-Reset Password"
+                ],
+                "summary": "",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "User's email",
+                                        "example": ""
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "description": "User's new password (The password must be at least 8 characters long, contain at least one uppercase letter, and one special character.)",
+                                        "example": ""
+                                    },
+                                    "password_confirmation": {
+                                        "type": "string",
+                                        "description": "User's Confirm Password",
+                                        "example": ""
+                                    },
+                                    "otp_code": {
+                                        "type": "number",
+                                        "description": "OTP",
+                                        "example": ""
+                                    }
+                                }
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/delete-account": {
+            "post": {
+                "tags": ["7-Delete User Account"],
+                "summary": "",
+                "responses": {
+                    "200": {
+                        "description": "User Deleted successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+
+
+        "/api/add/user/events": {
+            "post": {
+                "tags": ["8-Add Events"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Title (Alphanumeric and spaces).",
+                                        "example": "Meeting"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "description": "Only letters (active/inactive).",
+                                        "example": "active"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "description": "Location of the event.",
+                                        "example": "Office"
+                                    },
+                                    "latitude": {
+                                        "type": "string",
+                                        "description": "Latitude format (as a string to include decimals).",
+                                        "example": "40.712776"
+                                    },
+                                    "longitude": {
+                                        "type": "string",
+                                        "description": "Longitude format (as a string to include decimals).",
+                                        "example": "-74.005974"
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "description": "Hex color code.",
+                                        "example": "#FF5733"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "description": "Additional notes for the event.",
+                                        "example": "Team meeting"
+                                    },
+                                    "recurrence_start": {
+                                        "type": "string",
+                                        "description": "Start date for recurrence (YYYY-MM-DD).",
+                                        "example": "2024-10-10"
+                                    },
+                                    "recurrence_end": {
+                                        "type": "string",
+                                        "description": "End date for recurrence (YYYY-MM-DD).",
+                                        "example": "2024-10-30"
+                                    },
+                                    "repetition": {
+                                        "type": "string",
+                                        "description": "Frequency of repetition (e.g., daily, weekly).",
+                                        "example": "weekly"
+                                    },
+                                    "eventDuration": {
+                                        "type": "array",
+                                        "description": "Array of event durations.",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "start": {
+                                                    "type": "string",
+                                                    "description": "Start time of the event duration (YYYY-MM-DD HH:MM).",
+                                                    "example": "2024-10-07 12:00"
+                                                },
+                                                "end": {
+                                                    "type": "string",
+                                                    "description": "End time of the event duration (YYYY-MM-DD HH:MM).",
+                                                    "example": "2024-10-12 14:00"
+                                                }
+                                            },
+                                            "required": ["start", "end"]
+                                        }
+                                    }
+                                },
+                                "required": ["title", "eventDuration"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Event Added successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+
+
+
+        "/api/get/today/events": {
+            "get": {
+                "tags": [
+                    "9-Today’s Duty schedule"
+                ],
+                "summary": "",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "start_date",
+                        "in": "query",
+                        "description": "Enter Start Date (Optional)"
+
+                    },
+                    {
+                        "name": "end_date",
+                        "in": "query",
+                        "description": "Enter End Date (Optional)"
+
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/get/all/events": {
+            "get": {
+                "tags": [
+                    "10-My Schedule (get all events)"
+                ],
+                "summary": "",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/send-swap": {
+            "post": {
+                "tags": ["11-Send Swaps"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "recipient_id": {
+                                        "type": "integer",
+                                        "description": "Id of a user whom you want to send swap",
+                                        "example": ""
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "description": "Date (YYYY-MM-DD)",
+                                        "example": ""
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "description": "Start time (HH:MM:SS)",
+                                        "example": ""
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "description": "End time (HH:MM:SS)",
+                                        "example": ""
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "description": "Location (String)",
+                                        "example": ""
+                                    },
+                                    "gift": {
+                                        "type": "string",
+                                        "description": "Gift ($200).",
+                                        "example": ""
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "description": "Message (string)",
+                                        "example": ""
+                                    }
+
+                                },
+                                "required": ["recipient_id","date","start_time","end_time","location"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Swap sent successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/response-swaps": {
+            "post": {
+                "tags": ["12-(Accept, Decline) Swaps"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "swap_id": {
+                                        "type": "integer",
+                                        "description": "Swap ID ",
+                                        "example": ""
+                                    },
+                                    "response": {
+                                        "type": "string",
+                                        "description": "Response (Accept or Decline).",
+                                        "example": ""
+                                    }
+
+                                },
+                                "required": ["swap_id","response"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Swap Response saved successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/view-swap-details": {
+            "get": {
+                "tags": [
+                    "13-View Swap Details"
+                ],
+                "summary": "",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "swap_id",
+                        "in": "query",
+                        "description": "Enter Swap id"
+
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/all/notifications": {
+            "get": {
+                "tags": [
+                    "14-Swaps Notifications (Successful swaps, sent swaps, received swaps, notifications)."
+                ],
+                "summary": "",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/help-status": {
+            "get": {
+                "tags": [
+                    "15-Help Status."
+                ],
+                "summary": "",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/send-sos": {
+            "post": {
+                "tags": ["16-Send Sos"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+
+                                    "recipient_id": {
+                                        "type": "integer",
+                                        "description": "Id of a user whom you want to send sos",
+                                        "example": ""
+                                    },
+                                    "date": {
+                                        "type": "string",
+                                        "description": "Date (YYYY-MM-DD)",
+                                        "example": ""
+                                    },
+                                    "start_time": {
+                                        "type": "string",
+                                        "description": "Start time (HH:MM:SS)",
+                                        "example": ""
+                                    },
+                                    "end_time": {
+                                        "type": "string",
+                                        "description": "End time (HH:MM:SS)",
+                                        "example": ""
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "description": "Location (String)",
+                                        "example": ""
+                                    },
+                                    "message": {
+                                        "type": "string",
+                                        "description": "Message (string)",
+                                        "example": ""
+                                    }
+
+                                },
+                                "required": ["recipient_id","date","start_time","end_time","location"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sos Sent successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/response-sos": {
+            "post": {
+                "tags": ["17-(Accept, Decline) Sos"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "sos_id": {
+                                        "type": "integer",
+                                        "description": "Sos ID ",
+                                        "example": ""
+                                    },
+                                    "response": {
+                                        "type": "string",
+                                        "description": "Response (Accept or Decline).",
+                                        "example": ""
+                                    }
+
+                                },
+                                "required": ["sos_id","response"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Sos Response saved successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/view-sos-details": {
+            "get": {
+                "tags": [
+                    "18-View Sos Details"
+                ],
+                "summary": "",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "sos_id",
+                        "in": "query",
+                        "description": "Enter Sos id"
+
+                    }
+                ],
+
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/create-request": {
+            "post": {
+                "tags": ["19-Support Api"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "email": {
+                                        "type": "string",
+                                        "description": "email"
+                                    },
+                                    "subject": {
+                                        "type": "string",
+                                        "description": "subject"
+                                    },
+                                    "text": {
+                                        "type": "string",
+                                        "description": "text"
+                                    }
+                                },
+                                "required": ["email","subject","text"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Support Message Sent successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/set-reminder": {
+            "post": {
+                "tags": ["20-Set Reminder"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "reminder_date": {
+                                        "type": "string",
+                                        "description": "Reminder Date"
+                                    },
+                                    "reminder_time": {
+                                        "type": "string",
+                                        "description": "Reminder Time"
+                                    },
+                                    "reminder_name": {
+                                        "type": "string",
+                                        "description": "Reminder Name"
+                                    },
+                                    "snooze_on": {
+                                        "type": "integer",
+                                        "description": "Snooze Toggle On/Off"
+                                    },
+                                    "snooze_interval": {
+                                        "type": "integer",
+                                        "description": "Snooze Interval"
+                                    },
+                                    "snooze_repeat": {
+                                        "type": "integer",
+                                        "description": "Snooze Repeat"
+                                    }
+
+                                },
+                                "required": ["reminder_date","reminder_time","reminder_name"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reminder Set successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/get-reminder": {
+            "get": {
+                "tags": [
+                    "21-Get All Reminders"
+                ],
+                "summary": "",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/alarms/toggle": {
+            "post": {
+                "tags": ["22-Toggle Reminder On/Off"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "reminder_id": {
+                                        "type": "integer",
+                                        "description": "Reminder Id"
+                                    }
+                                },
+                                "required": ["reminder_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reminder Set successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/notification/status": {
+            "post": {
+                "tags": ["23-Read Notification"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "notification_id": {
+                                        "type": "integer",
+                                        "description": "Notification Id"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "description": "Status should be either read/unread"
+                                    }
+                                },
+                                "required": ["notification_id", "status"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "successful request"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/users/show-image": {
+            "get": {
+                "tags": ["25-User Image Display"],
+                "summary": "Retrieve and display user image",
+
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/profile": {
+            "get": {
+                "tags": ["26-Display User Profile"],
+                "summary": "Display User Profile",
+
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/profile/update": {
+            "post": {
+                "tags": ["27-Update about me , Experience"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+
+                                    "aboutMe": {
+                                        "type": "string",
+                                        "description": "About Me",
+                                        "example": ""
+                                    },
+                                    "experience": {
+                                        "type": "string",
+                                        "description": "Experience",
+                                        "example": ""
+                                    },
+                                    "name": {
+                                        "type": "string",
+                                        "description": "Name",
+                                        "example": ""
+                                    },
+                                    "department": {
+                                        "type": "string",
+                                        "description": "Department",
+                                        "example": ""
+                                    },
+                                    "designation": {
+                                        "type": "string",
+                                        "description": "Designation",
+                                        "example": ""
+                                    }
+
+                                },
+                                "required": ["aboutMe","experience","name","department","designation"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Request"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/update-user-status": {
+            "post": {
+                "tags": ["28-Update User Status Online/Offline"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+
+                                    "status": {
+                                        "type": "string",
+                                        "description": "Status should be either online/offline",
+                                        "example": ""
+                                    }
+
+                                },
+                                "required": ["status"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Request"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        
+        "/api/compare-schedules": {
+            "get": {
+                "tags": [
+                    "30-Compare Schedule"
+                ],
+                "summary": "",
+                "description": "",
+                "parameters": [
+                    {
+                        "name": "friend_user_id",
+                        "in": "query",
+                        "description": "Enter Other User id"
+
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/pages/privacy-policy": {
+            "get": {
+                "tags": [
+                    "31-Get Privacy Policy"
+                ],
+                "summary": "",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/pages/terms-conditions": {
+            "get": {
+                "tags": [
+                    "32-Get Terms & Conditions"
+                ],
+                "summary": "",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/pages/about-us": {
+            "get": {
+                "tags": [
+                    "33-Get About Us"
+                ],
+                "summary": "",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/block-users": {
+            "post": {
+                "tags": ["34-Block User"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+
+                                    "user_id": {
+                                        "type": "integer",
+                                        "description": "User Id",
+                                        "example": ""
+                                    },
+                                    "reason": {
+                                        "type": "string",
+                                        "description": "Reason to block",
+                                        "example": ""
+                                    }
+
+
+                                },
+                                "required": ["user_id","reason"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Request"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/unblock-users": {
+            "post": {
+                "tags": ["35-UnBlock User"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+
+                                    "user_id": {
+                                        "type": "integer",
+                                        "description": "User Id",
+                                        "example": ""
+                                    }
+                                },
+                                "required": ["user_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Request"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/blocked-users": {
+            "get": {
+                "tags": [
+                    "36-Get Blocked User list"
+                ],
+                "summary": "",
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/report-user": {
+            "post": {
+                "tags": ["37-Report User"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+
+                                    "user_id": {
+                                        "type": "integer",
+                                        "description": "User Id",
+                                        "example": ""
+                                    },
+                                    "reason": {
+                                        "type": "integer",
+                                        "description": "Reason",
+                                        "example": ""
+                                    }
+                                },
+                                "required": ["user_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Successful Request"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/by/id": {
+            "get": {
+                "tags": [
+                    "38-Get User By Id"
+                ],
+                "summary": "",
+                "parameters": [
+                    {
+                        "name": "user_id",
+                        "in": "query",
+                        "description": "Enter user id"
+
+                    }
+                ],
+                "description": "",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/update/user/event": {
+            "post": {
+                "tags": ["39-Update Events"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "event_id": {
+                                        "type": "integer",
+                                        "description": "Event ID to update.",
+                                        "example": 15
+                                    },
+                                    "title": {
+                                        "type": "string",
+                                        "description": "Title (Alphanumeric and spaces).",
+                                        "example": "Meeting"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "description": "Only letters (active/inactive).",
+                                        "example": "active"
+                                    },
+                                    "location": {
+                                        "type": "string",
+                                        "description": "Location of the event.",
+                                        "example": "Office"
+                                    },
+                                    "latitude": {
+                                        "type": "string",
+                                        "description": "Latitude format (as a string to include decimals).",
+                                        "example": "40.712776"
+                                    },
+                                    "longitude": {
+                                        "type": "string",
+                                        "description": "Longitude format (as a string to include decimals).",
+                                        "example": "-74.005974"
+                                    },
+                                    "color": {
+                                        "type": "string",
+                                        "description": "Hex color code.",
+                                        "example": "#FF5733"
+                                    },
+                                    "note": {
+                                        "type": "string",
+                                        "description": "Additional notes for the event.",
+                                        "example": "Team meeting"
+                                    },
+                                    "recurrence_start": {
+                                        "type": "string",
+                                        "description": "Start date for recurrence (YYYY-MM-DD).",
+                                        "example": "2024-10-10"
+                                    },
+                                    "recurrence_end": {
+                                        "type": "string",
+                                        "description": "End date for recurrence (YYYY-MM-DD).",
+                                        "example": "2024-10-30"
+                                    },
+                                    "repetition": {
+                                        "type": "string",
+                                        "description": "Frequency of repetition (e.g., daily, weekly).",
+                                        "example": "weekly"
+                                    },
+                                    "eventDuration": {
+                                        "type": "array",
+                                        "description": "Array of event durations.",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "start": {
+                                                    "type": "string",
+                                                    "description": "Start time of the event duration (YYYY-MM-DD HH:MM).",
+                                                    "example": "2024-10-07 12:00"
+                                                },
+                                                "end": {
+                                                    "type": "string",
+                                                    "description": "End time of the event duration (YYYY-MM-DD HH:MM).",
+                                                    "example": "2024-10-12 14:00"
+                                                }
+                                            },
+                                            "required": ["start", "end"]
+                                        }
+                                    }
+                                },
+                                "required": ["title", "eventDuration"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Event Added successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/delete/user/event": {
+            "post": {
+                "tags": ["40-Delete Events"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "event_id": {
+                                        "type": "integer",
+                                        "description": "Event ID",
+                                        "example": ""
+                                    }
+                                },
+                                "required": ["event_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Event Deleted successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/delete/reminder": {
+            "post": {
+                "tags": ["41-Delete Reminders"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "reminder_id": {
+                                        "type": "integer",
+                                        "description": "Reminder ID",
+                                        "example": ""
+                                    }
+                                },
+                                "required": ["reminder_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Reminder Deleted successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/send-friend-request": {
+            "post": {
+                "tags": ["42-Send Friend Request"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "recipient_id": {
+                                        "type": "integer",
+                                        "description": "Id of a user whom you want to send FR",
+                                        "example": ""
+                                    }
+                                },
+                                "required": ["recipient_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Friend Request sent successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/response/friend-request": {
+            "post": {
+                "tags": ["43-(Accept, Decline) Friend Request"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "friend_request_id": {
+                                        "type": "integer",
+                                        "description": "FR ID ",
+                                        "example": ""
+                                    },
+                                    "response": {
+                                        "type": "string",
+                                        "description": "Response (Accept or Decline).",
+                                        "example": ""
+                                    }
+
+                                },
+                                "required": ["friend_request_id","response"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "FR Response saved successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/user/contacts": {
+            "get": {
+                "tags": ["44-Get Friends List"],
+                "summary": "Get Friends List",
+
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/friends/remove": {
+            "post": {
+                "tags": ["45-Remove Friends"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "friend_id": {
+                                        "type": "integer",
+                                        "description": "Friend ID ",
+                                        "example": ""
+                                    }
+                                },
+                                "required": ["friend_id"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Response saved successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "Not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/add/user/calendar-events": {
+            "post": {
+                "tags": ["49-Store User Calendar Events"],
+                "summary": "This API can add multiple time slots in the current date. Date in the format YYYY-MM-DD. Time in the format HH:mm AM/PM",
+                "description": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "user_events": {
+                                        "type": "array",
+                                        "items": {
+                                            "type": "object",
+                                            "properties": {
+                                                "date": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "description": "Date in the format YYYY-MM-DD"
+                                                },
+                                                "available_slots": {
+                                                    "type": "array",
+                                                    "items": {
+                                                        "type": "object",
+                                                        "properties": {
+                                                            "start_data": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "description": "Start time in the format YYYY-MM-DDTHH:mm:ss.sssZ"
+                                                            },
+                                                            "end_data": {
+                                                                "type": "string",
+                                                                "format": "date-time",
+                                                                "description": "End time in the format YYYY-MM-DDTHH:mm:ss.sssZ"
+                                                            }
+                                                        },
+                                                        "required": ["start_data", "end_data"]
+                                                    },
+                                                    "description": "Array of available time slots for the specified date"
+                                                }
+                                            },
+                                            "required": ["date", "available_slots"]
+                                        }
+                                    }
+                                },
+                                "required": ["user_events"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/professions": {
+            "get": {
+                "tags": ["50-Get Profession"],
+
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    },
+                    "404": {
+                        "description": "Not Found"
+                    }
+                }
+            }
+        },
+        "/api/change-password": {
+            "post": {
+                "tags": ["51-Change Password"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "current_password": {
+                                        "type": "string",
+                                        "description": "your current password",
+                                        "example": ""
+                                    },
+                                    "new_password": {
+                                        "type": "string",
+                                        "description": "New Password",
+                                        "example": ""
+                                    },
+                                    "new_password_confirmation": {
+                                        "type": "string",
+                                        "description": "Confirm Password",
+                                        "example": ""
+                                    }
+                                },
+                                "required": ["current_password","new_password","new_password_confirmation"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Swap sent successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        },
+        "/api/fcm_token": {
+            "post": {
+                "tags": ["52-Update FCM Token"],
+                "summary": "",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "multipart/form-data": {
+                            "schema": {
+                                "type": "object",
+                                "properties": {
+                                    "fcm_token": {
+                                        "type": "string",
+                                        "description": "fcm token",
+                                        "example": ""
+                                    }
+                                },
+                                "required": ["fcm_token"]
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Swap sent successfully"
+                    },
+                    "400": {
+                        "description": "Bad Request"
+                    },
+                    "404": {
+                        "description": "User not found"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
+            }
+        }
+    },
+    "components": {
+        "securitySchemes": {
+            "bearerAuth": {
+                "type": "http",
+                "scheme": "bearer",
+                "bearerFormat": "JWT"
+            }
+        },
+        "security": [
+            {
+                "bearerAuth": []
+            }
+        ]
+    }
+}
