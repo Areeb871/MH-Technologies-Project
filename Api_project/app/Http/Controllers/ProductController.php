@@ -17,17 +17,12 @@ class ProductController extends Controller
     // Fetch all products
     public function index()
     {
-        $products = Product::get(); // Get all products
-
+        $products = Product::all(); // Fetch all products
         if ($products->isEmpty()) {
-            // Return response if no products found
             return response()->json(['message' => 'No records available'], 404);
         }
-
-        // Return a collection of products wrapped in ProductResource
-        return ProductResource::collection($products);
+        return response()->json(['products' => ProductResource::collection($products)], 200);
     }
-
     // Store a new product
     public function store(Request $request)
 {
@@ -155,7 +150,6 @@ class ProductController extends Controller
         'data' => new ProductResource($product)
     ], 200); // 200 status code for successful update
 }
-
     public function destroy($id)
     {
         $product = Product::find($id);
